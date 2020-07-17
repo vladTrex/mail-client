@@ -3,9 +3,9 @@ import React from 'react';
 import Header from './partials/Header';
 import MessageList from './partials/MessageList';
 
-const MainPage = ({ onLogout }) => (
+const MainPage = () => (
   <main>
-    <Header onLogout={onLogout} />
+    <Header />
     <MessageList />
   </main>
 );

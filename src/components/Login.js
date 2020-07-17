@@ -1,14 +1,15 @@
-import React, { Component } from 'react';
+import React from 'react';
 
 import { login } from '../api';
+import UserContext from '../contexts/UserContext';
 
-class Login extends Component{
+class LoginPage extends React.Component {
     state = {
-        username: '',
-        password: '',
+        error: null,
         loading: false,
-        error: null
-    }
+        username: '',
+        password: ''
+    };
 
     handleInputChange = e => {
         this.setState({
@@ -16,49 +17,52 @@ class Login extends Component{
         });
     };
 
-    handleSubmit = e => {
+    handleSubmit = (e, onLogin) => {
         e.preventDefault();
         this.setState({ loading: true, error: null });
         login(this.state.username, this.state.password)
             .then(user => {
                 this.setState({ loading: false });
-                this.props.onLogin(user);
+                onLogin(user);
             })
             .catch(error => this.setState({ error, loading: false }));
-
-    }
+    };
 
     render() {
         const { username, password, error, loading } = this.state;
 
-        return(
-            <div>
-                <form onSubmit={this.handleSubmit}>
-                    <label>
-                        Username
-                        <input
-                            name="username"
-                            value={username}
-                            onChange={this.handleInputChange}
-                        />
-                    </label>
-                    <label>
-                        Password
-                        <input
-                            name="password"
-                            type="password"
-                            value={password}
-                            onChange={this.handleInputChange}
-                        />
-                    </label>
-                    {error && <div className="error">{error.message}</div>}
-                    <button type="submit" disabled={loading}>
-                        Sign In
-                    </button>
-                </form>
-            </div>
+        return (
+            <UserContext.Consumer>
+                {({ onLogin }) => (
+                    <div className="LoginPage">
+                        <form onSubmit={e => this.handleSubmit(e, onLogin)}>
+                            <label>
+                                Username
+                                <input
+                                    name="username"
+                                    value={username}
+                                    onChange={this.handleInputChange}
+                                />
+                            </label>
+                            <label>
+                                Password
+                                <input
+                                    name="password"
+                                    type="password"
+                                    value={password}
+                                    onChange={this.handleInputChange}
+                                />
+                            </label>
+                            {error && <div className="error">{error.message}</div>}
+                            <button type="submit" disabled={loading}>
+                                Sign In
+                            </button>
+                        </form>
+                    </div>
+                )}
+            </UserContext.Consumer>
         );
     }
 }
 
-export default Login;
+export default LoginPage;

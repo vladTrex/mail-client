@@ -1,9 +1,16 @@
 import React from 'react';
+import UserContext from '../../contexts/UserContext';
 
-const MessageList = () => {
-    return (<div>
-        Your mailbox is empty
-    </div>);
-};
+const MessageList = () => (
+    <UserContext.Consumer>
+        {({ user }) => (
+            <div className="MessageList">
+                <div className="no-messages">
+                    Your mailbox is empty, {user.firstName}! 🎉
+                </div>
+            </div>
+        )}
+    </UserContext.Consumer>
+);
 
 export default MessageList;
