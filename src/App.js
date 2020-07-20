@@ -4,40 +4,20 @@ import React, { Component, Fragment } from 'react';
 import Login from './components/Login';
 import './App.css';
 import MainPage from './components/MainPage';
-import UserContext from './contexts/UserContext';
+import { UserProvider, UserConsumer } from './contexts/UserContext';
 
 class App extends Component {
-    state = {
-        currentUser: null,
-    };
-
-    handleLogin = (user) => {
-        this.setState({ currentUser: user });
-    };
-
-    handleLogout = () => {
-        this.setState({ currentUser: null });
-    };
-
     render() {
-        const { currentUser } = this.state;
-
         return (
             <div style={{ padding: 10 }}>
-                <UserContext.Provider value={{
-                    user: currentUser,
-                    onLogin: this.handleLogin,
-                    onLogout: this.handleLogout
-                }}>
-                    {currentUser ? (
-                        <Fragment>
+                <UserProvider>
+                    <UserConsumer>
+                        {({ user }) => (user ? <Fragment>
                             <h3>Logged in</h3>
                             <MainPage/>
-                        </Fragment>
-                    ) : (
-                        <Login />
-                    )}
-                </UserContext.Provider>
+                        </Fragment> : <Login/>)}
+                    </UserConsumer>
+                </UserProvider>
             </div>
         );
     }
