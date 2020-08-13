@@ -1,6 +1,7 @@
 import React, { createContext, Component } from 'react';
 
-const { Provider, Consumer } = createContext();
+let UserContext;
+const { Provider, Consumer } = (UserContext = createContext());
 
 class UserProvider extends Component {
     state = {
@@ -30,4 +31,4 @@ class UserProvider extends Component {
     }
 }
 
-export { UserProvider, Consumer as UserConsumer };
+export { UserProvider, Consumer as UserConsumer, UserContext };

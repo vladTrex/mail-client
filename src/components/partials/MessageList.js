@@ -1,36 +1,36 @@
-import React from 'react';
-import { UserConsumer } from '../../contexts/UserContext';
-import { EmailConsumer } from '../../contexts/EmailContext';
+import React, { useContext } from 'react';
 
-const MessageList = () => (
-    <UserConsumer>
-        {({ user }) => (
-            <EmailConsumer>
-                {({ loading, emails, onSelectEmail }) => (
-                    <div className="MessageList">
-                        {loading ? (
-                            <div className="no-messages">Loading...</div>
-                        ) : emails.length === 0 ? (
-                            <div className="no-messages">
-                                Your mailbox is empty, {user.firstName}! 🎉
-                            </div>
-                        ) : (
-                            <ul>
-                                {emails.map(email => (
-                                    <Email
-                                        key={email.id}
-                                        email={email}
-                                        onClick={() => onSelectEmail(email)}
-                                    />
-                                ))}
-                            </ul>
-                        )}
-                    </div>
-                )}
-            </EmailConsumer>
-        )}
-    </UserConsumer>
-);
+import { UserContext } from '../../contexts/UserContext';
+import { EmailContext } from '../../contexts/EmailContext';
+
+const MessageList = () => {
+    const { user } = useContext(UserContext);
+    const { loading, emails, onSelectEmail } = useContext(
+        EmailContext
+    );
+
+    return (
+        <div className="MessageList">
+            {loading ? (
+                <div className="no-messages">Loading...</div>
+            ) : emails.length === 0 ? (
+                <div className="no-messages">
+                    Your mailbox is empty, {user.firstName}! 🎉
+                </div>
+            ) : (
+                <ul>
+                    {emails.map(email => (
+                        <Email
+                            key={email.id}
+                            email={email}
+                            onClick={() => onSelectEmail(email)}
+                        />
+                    ))}
+                </ul>
+            )}
+        </div>
+    );
+};
 
 const Email = ({ email, onClick }) => (
     <li onClick={onClick}>
@@ -38,5 +38,4 @@ const Email = ({ email, onClick }) => (
         <div className="preview">{email.preview}</div>
     </li>
 );
-
 export default MessageList;

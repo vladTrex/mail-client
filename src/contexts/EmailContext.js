@@ -3,7 +3,8 @@ import React, { createContext, Component } from 'react';
 import { fetchEmails, fetchLatestEmails } from '../api';
 import { withNotifier } from './NotificationContext';
 
-const { Provider, Consumer } = createContext();
+let EmailContext;
+const { Provider, Consumer } = (EmailContext = createContext());
 
 class EmailProvider extends Component {
     state = {
@@ -61,4 +62,4 @@ class EmailProvider extends Component {
 
 const Wrapped = withNotifier(EmailProvider);
 
-export { Wrapped as EmailProvider, Consumer as EmailConsumer };
+export { Wrapped as EmailProvider, Consumer as EmailConsumer, EmailContext };
