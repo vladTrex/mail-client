@@ -1,4 +1,4 @@
-import React, { useContext } from 'react';
+import React, { useContext, memo } from 'react';
 
 import { UserContext } from '../../contexts/UserContext';
 import { EmailContext } from '../../contexts/EmailContext';
@@ -23,7 +23,7 @@ const MessageList = () => {
                         <Email
                             key={email.id}
                             email={email}
-                            onClick={() => onSelectEmail(email)}
+                            onClick={onSelectEmail}
                         />
                     ))}
                 </ul>
@@ -32,10 +32,10 @@ const MessageList = () => {
     );
 };
 
-const Email = ({ email, onClick }) => (
-    <li onClick={onClick}>
+const Email = memo(({ email, onClick }) => (
+    <li onClick={() => onClick(email)}>
         <div className="subject">{email.subject}</div>
         <div className="preview">{email.preview}</div>
     </li>
-);
+));
 export default MessageList;
